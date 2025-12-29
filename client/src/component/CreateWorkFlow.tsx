@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
-import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, type NodeChange } from '@xyflow/react';
+import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, type NodeChange, Position } from '@xyflow/react';
 import {Router,BrowserRouter,Routes,Route} from 'react-router-dom';
+import { TriggerSheet } from './TriggerSheet';
 
 
 
@@ -9,8 +10,10 @@ interface NodeType{
     data:{
         type:"action"|"trigger";
         kind:NodeKind
+        metadata:
     },
-    id:string,position:{x:number,y:number},
+    id:string,
+    position:{x:number,y:number},
 }
 interface Edge{
     id:string,
@@ -36,6 +39,16 @@ export default function CreateWorkFlow() {
  
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
+      {!nodes.length && <TriggerSheet onSelect={(kind,metadata)=>{
+        setNodes({..nodes,{
+          id:Math.random().toString(),
+          data:{
+            type:"trigger",
+            kind
+          },
+          position:{x:0,y:0}
+        }})
+      }}/>}
       <ReactFlow
         nodes={nodes}
         edges={edges}

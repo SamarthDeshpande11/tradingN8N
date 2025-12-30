@@ -1,54 +1,69 @@
-import { useState, useCallback } from 'react';
-import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, type NodeChange, Position } from '@xyflow/react';
-import {Router,BrowserRouter,Routes,Route} from 'react-router-dom';
-import { TriggerSheet } from './TriggerSheet';
+import { useState, useCallback } from "react";
+import {
+  ReactFlow,
+  applyNodeChanges,
+  applyEdgeChanges,
+  addEdge,
+  type NodeChange,
+  Position,
+} from "@xyflow/react";
+import { Router, BrowserRouter, Routes, Route } from "react-router-dom";
+import { TriggerSheet, type NodeMetadata } from "./TriggerSheet";
 
-
-
-export type NodeKind="price-trigger"|"timer-trigger"|"hyperliquid"|"backpack"|"lighter"
-interface NodeType{
-    data:{
-        type:"action"|"trigger";
-        kind:NodeKind
-        metadata:
-    },
-    id:string,
-    position:{x:number,y:number},
+export type NodeKind =
+  | "price-trigger"
+  | "timer-trigger"
+  | "hyperliquid"
+  | "backpack"
+  | "lighter";
+interface NodeType {
+  data: {
+    type: "action" | "trigger";
+    kind: NodeKind;
+    metadata: NodeMetadata;
+  };
+  id: string;
+  position: { x: number; y: number };
 }
-interface Edge{
-    id:string,
-    source:string,
-    target:string
+interface Edge {
+  id: string;
+  source: string;
+  target: string;
 }
 export default function CreateWorkFlow() {
   const [nodes, setNodes] = useState<NodeType[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
- 
+
   const onNodesChange = useCallback(
-    (changes:any) => setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
-    [],
+    (changes: any) =>
+      setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
+    []
   );
   const onEdgesChange = useCallback(
-    (changes:any) => setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
-    [],
+    (changes: any) =>
+      setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
+    []
   );
   const onConnect = useCallback(
-    (params:any) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
-    [],
+    (params: any) =>
+      setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
+    []
   );
- 
+
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <div style={{ width: "100vw", height: "100vh" }}>
       {!nodes.length && <TriggerSheet onSelect={(kind,metadata)=>{
-        setNodes({..nodes,{
+        setNodes([...nodes,{
           id:Math.random().toString(),
           data:{
             type:"trigger",
-            kind
+            kind,
+            metadata
           },
           position:{x:0,y:0}
-        }})
+        }])
       }}/>}
+
       <ReactFlow
         nodes={nodes}
         edges={edges}

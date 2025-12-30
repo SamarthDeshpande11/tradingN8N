@@ -23,7 +23,7 @@ import {
 } from "./sheet";
 import { Description, Title } from "@radix-ui/react-dialog";
 import { useState } from "react";
-type NodeMetadata = any;
+export type NodeMetadata = any;
 
 const SUPPORTED_TRIGGERS=[{
     id:"timer",

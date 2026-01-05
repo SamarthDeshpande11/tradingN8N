@@ -8,14 +8,10 @@ import {
   Position,
 } from "@xyflow/react";
 import { Router, BrowserRouter, Routes, Route } from "react-router-dom";
-import { TriggerSheet, type NodeMetadata } from "./TriggerSheet";
+import { TriggerSheet } from "./TriggerSheet";
+import type { NodeKind, NodeMetadata } from "./types";
 
-export type NodeKind =
-  | "price-trigger"
-  | "timer-trigger"
-  | "hyperliquid"
-  | "backpack"
-  | "lighter";
+
 interface NodeType {
   data: {
     type: "action" | "trigger";
@@ -52,17 +48,17 @@ export default function CreateWorkFlow() {
 
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
-      {!nodes.length && <TriggerSheet onSelect={(kind,metadata)=>{
-        setNodes([...nodes,{
-          id:Math.random().toString(),
-          data:{
-            type:"trigger",
+      {!nodes.length && <TriggerSheet onSelect={(kind, metadata) => {
+        setNodes([...nodes, {
+          id: Math.random().toString(),
+          data: {
+            type: "trigger",
             kind,
             metadata
           },
-          position:{x:0,y:0}
+          position: { x: 0, y: 0 }
         }])
-      }}/>}
+      }} />}
 
       <ReactFlow
         nodes={nodes}

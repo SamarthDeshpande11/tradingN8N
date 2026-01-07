@@ -8,7 +8,7 @@ export default function App(){
     <BrowserRouter>
       <Routes>
         <Route path="/create-workflow" element={<CreateWorkFlow/>} />
-        
+        <Route path="*" element={<div>Home Page</div>} />
       </Routes>
     </BrowserRouter>
   </div>
